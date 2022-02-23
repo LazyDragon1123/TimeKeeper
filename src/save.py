@@ -7,6 +7,7 @@ class TimeSave:
     
     def __init__(self, timekeeper: TimeKeeper):
         self.path = 'limited_life.csv'
+        self.path_copy = 'limited_life_copy.csv'
         self._retrieve_data()
         self._timekeeper = timekeeper
         
@@ -22,6 +23,7 @@ class TimeSave:
     def _retrieve_data(self):
         if exists(self.path):
             self._df = pd.read_csv(self.path, usecols=['Date', 'Start Time', 'Work Mins', 'Task'])
+            self._df.to_csv(self.path_copy, index=False)
             return
         else:
             self._df = pd.DataFrame(columns=['Date', 'Start Time', 'Work Mins', 'Task'])
