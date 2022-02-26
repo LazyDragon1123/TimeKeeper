@@ -5,9 +5,9 @@ import datetime
 
 class TaskTable():
     
-    def __init__(self):
+    def __init__(self, reserve=1):
         os.makedirs('tasks', exist_ok=True)
-        self.path = f'tasks/{self._tomorrow()}.csv'
+        self.path = f'tasks/{self._specific_date(days=int(reserve))}.csv'
         self._retrieve_data()
         
     def __call__(self):
@@ -53,9 +53,10 @@ class TaskTable():
         else:
             self._df = pd.DataFrame(columns=['Group', 'Task'])
             return
-        
-    def _tomorrow(self):
-        self.date = datetime.datetime.now() + datetime.timedelta(days=1)
+    
+
+    def _specific_date(self, days=1):
+        self.date = datetime.datetime.now() + datetime.timedelta(days=days)
         return f"{self.date.year}_{self.date.month}_{self.date.day}"
     
     @property

@@ -6,7 +6,7 @@ import pandas as pd
 
 class TimeKeeper:
     
-    task_list = ['work', 'dragon', 'future', 'play', 'sleep', 'commute', 'general']
+    task_list = ['work', 'future', 'play', 'exercise', 'sleep', 'commute', 'general', 'other']
     
     def __init__(self, task = 'general'):
         if task not in self.task_list:
