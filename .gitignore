@@ -3,3 +3,5 @@
 localenv
 api.py
 *.pyc
+.mypy_cache
+__pycache__
