@@ -1,11 +1,15 @@
-from operator import sub
-import time
 import datetime
+import time
+from operator import sub
 from os.path import exists
+
 import numpy as np
 import pandas as pd
-from .taskmanager import TaskManager
+
 from .endday import DaySummary
+from .openday import OpenSummary
+from .taskmanager import TaskManager
+
 
 class TimeKeeper:
     
@@ -35,7 +39,9 @@ class TimeKeeper:
     def terminate(self):
         self._end_time = time.time()
         self.work_time = int(np.ceil((self.end_time - self.start_time)/ 60))
-        # if self.begin_day:
+        if self.begin_day:
+            op = OpenSummary()
+            op.summary()
 
 
         

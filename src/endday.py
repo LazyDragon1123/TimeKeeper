@@ -1,6 +1,7 @@
-import pandas as pd
-from os.path import exists
 import datetime
+from os.path import exists
+
+import pandas as pd
 
 
 class DaySummary:
@@ -23,7 +24,7 @@ class DaySummary:
         if len(self.df) == 0:
             return [self._specific_date()]
         elif self._specific_date() == self.df['Date'].to_list()[0]:
-            self.df = self.df.drip([0])
+            self.df = self.df.drop([0])
             return [self._specific_date()]
         elif self._specific_date(days=-1) == self.df['Date'].to_list()[0]:
             return [self._specific_date()]

@@ -1,7 +1,7 @@
-import imp
-
+from datetime import datetime
 
 import pandas as pd
+from collector.collector import Weather
 
 suffix = '\033['
 tail = '\033[0m'
@@ -12,13 +12,15 @@ class OpenSummary:
 
     def __init__(self, data_list = ['exercise', 'caffein']):
         self.data_list = data_list
+        self.w = Weather()
 
 
     def summary(self):
-        pass
+        self.get_news()
+        self.get_yourdata()
 
     def get_news(self):
-        pass
+        self.w()
 
     def get_yourdata(self, ref_days = 7):
         for sub in self.data_list:
@@ -26,14 +28,15 @@ class OpenSummary:
             ref_dates = self.extract_day(df['Date'].to_list())[:ref_days]
             evals = df['Eval'].to_list()
             exhibits = self.make_exhibits(ref_dates, evals, negative=(sub in self.negative_health))
-            print(f' *   {sub}')
+            print(f' **  {sub}  **  ')
             for e in exhibits:
-                print(e)
+                print(e, end=' ')
+            print('')
+        print('')
 
     @staticmethod
     def extract_day(days):
-        ###
-        return [date for date in days]
+        return [datetime.strptime(date, '%Y_%m_%d').day for date in days]
 
     @staticmethod
     def make_exhibits(text, evals, negative=False):

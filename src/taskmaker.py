@@ -1,7 +1,9 @@
-import pandas as pd
+import datetime
 import os
 from os.path import exists
-import datetime
+
+import pandas as pd
+
 
 class TaskTable():
     
@@ -20,7 +22,7 @@ class TaskTable():
         self._adding_df['Group'] = self.groups
         self._adding_df['Task'] = self.tasks
         self._adding_df['State'] = [70] * len(self.tasks) 
-        pd.concat([self._adding_df, self.df], ignore_index=True, axis=0).to_csv(self.path, index=False)    
+        pd.concat([self._adding_df, self._df], ignore_index=True, axis=0).drop_duplicates().to_csv(self.path, index=False)
         
     def _task_create(self):
         group = str(input("Group ?   :"))
@@ -54,7 +56,7 @@ class TaskTable():
                 return
             except:
                 self._df = pd.read_csv(self.path, usecols=['Group', 'Task'])
-                self._df['State'] = [70] * len(self.df)
+                self._df['State'] = [70] * len(self._df)
                 self._df = pd.concat([self._df, self._previousd_data()], ignore_index=True, axis=0)
                 return
         else:
@@ -65,18 +67,13 @@ class TaskTable():
         prev_path = f'tasks/{self._specific_date(days=0)}.csv'
         if exists(prev_path):
             try:
-                prev_df = pd.read_csv(self.path, usecols=['Group', 'Task', 'State'])
+                prev_df = pd.read_csv(prev_path, usecols=['Group', 'Task', 'State'])
                 return prev_df[prev_df['State'] == 70]
             except:
                 return pd.DataFrame(columns=['Group', 'Task', 'State'])
         else:
             return pd.DataFrame(columns=['Group', 'Task', 'State'])
-    
 
     def _specific_date(self, days=1):
         self.date = datetime.datetime.now() + datetime.timedelta(days=days)
         return f"{self.date.year}_{self.date.month}_{self.date.day}"
-    
-    @property
-    def df(self):
-        return self._df
