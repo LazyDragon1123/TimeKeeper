@@ -3,6 +3,7 @@ from os.path import exists
 
 import pandas as pd
 
+float_sub = ['weight']
 
 class DaySummary:
 
@@ -17,8 +18,7 @@ class DaySummary:
         adding_df = pd.DataFrame()
         adding_df['Date'] = last_day
         adding_df['Eval'] = self.evaluate(self.subject) * len(last_day)
-        pd.concat([adding_df, self.df], ignore_index=True, axis=0).to_csv(self.path, index=False)    
-
+        pd.concat([adding_df, self.df], ignore_index=True, axis=0).to_csv(self.path, index=False)
 
     def last_day_check(self):
         if len(self.df) == 0:
@@ -35,8 +35,11 @@ class DaySummary:
 
     @staticmethod
     def evaluate(subject):
-        ans = str(input(f'How was {subject} ? [y/n]  '))
-        return [True] if ans.lower() == 'y' else [False]
+        if subject in float_sub:
+            return [float(input(f'How was {subject} ?   '))]
+        else:
+            ans = str(input(f'How was {subject} ? [y/n]  '))
+            return [True] if ans.lower() == 'y' else [False]
 
     @staticmethod
     def _specific_date(days=0):

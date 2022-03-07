@@ -2,10 +2,11 @@ import datetime
 import os
 from os.path import exists
 
+import numpy as np
 import pandas as pd
 
 
-class TaskTable():
+class TaskTable:
     
     def __init__(self, reserve=1):
         os.makedirs('tasks', exist_ok=True)
@@ -73,6 +74,14 @@ class TaskTable():
                 return pd.DataFrame(columns=['Group', 'Task', 'State'])
         else:
             return pd.DataFrame(columns=['Group', 'Task', 'State'])
+        
+    def _delete_donetask(self):
+        prev_df = pd.read_csv(f'tasks/{self._specific_date(days=0)}.csv', usecols=['Group', 'Task', 'State'])
+        for gr, ta, st in zip(prev_df.loc[:, 'Group'].to_list(), prev_df.loc[:, 'Task'].to_list(), prev_df.loc[:, 'State'].to_list()):
+            self._df = self._df.reset_index(drop=True)
+            if st == 90:
+                self._df = self._df.drop(np.where((self._df['Group'] == gr) & (self._df['Task'] == ta))[0])
+        self._df.drop_duplicates().to_csv(self.path, index=False)
 
     def _specific_date(self, days=1):
         self.date = datetime.datetime.now() + datetime.timedelta(days=days)

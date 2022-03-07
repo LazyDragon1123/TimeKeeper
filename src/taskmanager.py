@@ -1,6 +1,7 @@
-import time
 import datetime
+import time
 from os.path import exists
+
 import numpy as np
 import pandas as pd
 
@@ -60,7 +61,7 @@ class TaskManager:
     def update_by_id(self, taskdf, id):
         taskdf_g = taskdf[taskdf['Group'] == self.groups[id]]
         ind = taskdf_g[taskdf_g['Task'] == self.tasks[id]].index[0]
-        taskdf.iloc[ind, taskdf.columns == 'State'] = 90
+        taskdf.iloc[ind, np.where(np.array(taskdf.columns == 'State'))[0][0]] = 90
         return taskdf
 
     @staticmethod

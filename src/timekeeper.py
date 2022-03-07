@@ -8,13 +8,14 @@ import pandas as pd
 
 from .endday import DaySummary
 from .openday import OpenSummary
+from .taskmaker import TaskTable
 from .taskmanager import TaskManager
 
 
 class TimeKeeper:
     
     task_list = ['work', 'future', 'play', 'exercise', 'sleep', 'commute', 'general', 'other']
-    days_sum_list = ['exercise', 'caffein']
+    days_sum_list = ['exercise', 'caffein', 'weight']
     
     def __init__(self, task = 'general'):
         if task not in self.task_list:
@@ -23,11 +24,13 @@ class TimeKeeper:
         self.date = datetime.datetime.now()
         self.taskmanager = TaskManager()
         self.begin_day = False
+        self.tasktable = TaskTable()
         
     def begin(self):
         if self.task == 'sleep':
             if str(input('End today ? [y/n]  ')) == 'y':
                 self.begin_day = True
+                self.tasktable._delete_donetask()
                 for summary in self.days_sum_list:
                     daysummary = DaySummary(subject=summary)
                     daysummary.update()
@@ -40,7 +43,7 @@ class TimeKeeper:
         self._end_time = time.time()
         self.work_time = int(np.ceil((self.end_time - self.start_time)/ 60))
         if self.begin_day:
-            op = OpenSummary()
+            op = OpenSummary(data_list=self.days_sum_list)
             op.summary()
 
 
