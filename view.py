@@ -1,9 +1,16 @@
-import pandas as pd
+import datetime
+
 import numpy as np
+import pandas as pd
+
+
+def date_str_sort(dlist):
+    dtimes = sorted([datetime.datetime.strptime(i, "%Y_%m_%d") for i in dlist])[::-1]
+    return [i.strftime("%Y_%-m_%-d") for i in dtimes]
 
 def main():
     df = pd.read_csv('limited_life.csv')
-    dates = np.sort(list(set(list(df['Date']))))[::-1]
+    dates = date_str_sort(list(set(list(df['Date']))))
     print('')
     for date in dates[:5]:
         df_date = df[df['Date'] == date]

@@ -63,7 +63,7 @@ class OpenSummary:
             return exhibits
         else:
             if negative:
-                evals = [~eval for eval in evals]
+                evals = [not eval for eval in evals]
             exhibits = []
             for ind in range(len(text)):
                 e = evals[ind]
