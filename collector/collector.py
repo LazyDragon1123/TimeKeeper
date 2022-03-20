@@ -45,7 +45,7 @@ class Weather(Collector):
                'tmax': [],
                'weat': [],
                }
-        for i in range(0,4):
+        for i in range(0,5):
             extracted = self.extract(jsontexts['list'][i])
             dic['t'].append(extracted[0])
             dic['tmin'].append(extracted[1])
