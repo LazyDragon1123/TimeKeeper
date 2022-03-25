@@ -1,9 +1,13 @@
 import datetime
 import os
+from copy import deepcopy
 from os.path import exists
 
 import numpy as np
 import pandas as pd
+
+daily_tasks = {'future': 'leetcode',
+               'exercise': 'strech'}
 
 
 class TaskTable:
@@ -23,15 +27,15 @@ class TaskTable:
         self._adding_df['Group'] = self.groups
         self._adding_df['Task'] = self.tasks
         self._adding_df['State'] = [70] * len(self.tasks) 
-        pd.concat([self._adding_df, self._df], ignore_index=True, axis=0).drop_duplicates().to_csv(self.path, index=False)
-        
+        self.everlasting_task(pd.concat([self._adding_df, self._df], ignore_index=True, axis=0)).drop_duplicates().to_csv(self.path, index=False)
+
     def _task_create(self):
         group = str(input("Group ?   :"))
         if len(group) == 0:
             if len(self.groups) == 0:
                 raise ValueError('No Task')
             else:
-                group = self.groups[-1]        
+                group = self.groups[-1]
         elif group == 'q' or group == 'Q':
             if len(self.groups) == 0:
                 raise ValueError('No Task')
@@ -74,7 +78,7 @@ class TaskTable:
                 return pd.DataFrame(columns=['Group', 'Task', 'State'])
         else:
             return pd.DataFrame(columns=['Group', 'Task', 'State'])
-        
+
     def _delete_donetask(self):
         prev_df = pd.read_csv(f'tasks/{self._specific_date(days=0)}.csv', usecols=['Group', 'Task', 'State'])
         for gr, ta, st in zip(prev_df.loc[:, 'Group'].to_list(), prev_df.loc[:, 'Task'].to_list(), prev_df.loc[:, 'State'].to_list()):
@@ -86,3 +90,11 @@ class TaskTable:
     def _specific_date(self, days=1):
         self.date = datetime.datetime.now() + datetime.timedelta(days=days)
         return f"{self.date.year}_{self.date.month}_{self.date.day}"
+
+    @staticmethod
+    def everlasting_task(df):
+        ret_df = deepcopy(df)
+        for gp, dtask in daily_tasks.items():
+            if dtask not in ret_df.Task:
+                ret_df.loc[len(ret_df)] = [gp, dtask, 70]
+        return ret_df
