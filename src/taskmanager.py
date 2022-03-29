@@ -16,7 +16,8 @@ class TaskManager:
     def update(self):
         self._show_tasks(num=True)
         ind = int(input("Id ?    "))
-        self.update_by_id(self.get_taskdf(), ind).to_csv(f'tasks/{self.date_start()}.csv',  index=False)    
+        self.update_by_id(self.get_taskdf(), ind).to_csv(f'tasks/{self._specific_date()}.csv',  index=False)
+        pd.read_csv(f'tasks/{self._specific_date()}.csv', usecols=['Group', 'Task', 'State']).to_csv(f'tasks/{self._specific_date(days=-1)}.csv',  index=False)
         print('')
         print('\033[96mGood Job ! !\033[0m')
         print('')
@@ -24,12 +25,13 @@ class TaskManager:
     def view(self):
         self._show_tasks()
         
-    def date_start(self):
+    def _specific_date(self, days=0):
+        self.date = datetime.datetime.now() + datetime.timedelta(days=days)
         return f"{self.date.year}_{self.date.month}_{self.date.day}"
 
     def _show_tasks(self, num=None):
         task_df = self.get_taskdf()
-        groups = list(set(task_df['Group']))
+        groups = np.sort(list((set(task_df['Group']))))
         cout = 0
         self.tasks = []
         self.groups = []
@@ -48,11 +50,11 @@ class TaskManager:
         return
 
     def get_taskdf(self):
-        if exists(f'tasks/{self.date_start()}.csv'):
+        if exists(f'tasks/{self._specific_date()}.csv'):
             try:
-                return pd.read_csv(f'tasks/{self.date_start()}.csv', usecols=['Group', 'Task', 'State'])
+                return pd.read_csv(f'tasks/{self._specific_date()}.csv', usecols=['Group', 'Task', 'State'])
             except:
-                task_df = pd.read_csv(f'tasks/{self.date_start()}.csv', usecols=['Group', 'Task'])
+                task_df = pd.read_csv(f'tasks/{self._specific_date()}.csv', usecols=['Group', 'Task'])
                 task_df['State'] = [70] * len(task_df)
                 return task_df
         else:
