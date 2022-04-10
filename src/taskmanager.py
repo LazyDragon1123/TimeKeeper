@@ -62,7 +62,7 @@ class TaskManager:
 
     def update_by_id(self, taskdf, id):
         taskdf_g = taskdf[taskdf['Group'] == self.groups[id]]
-        ind = taskdf_g[taskdf_g['Task'] == self.tasks[id]].index[0]
+        ind = taskdf_g[taskdf_g['Task'] == self.tasks[id]].index
         taskdf.iloc[ind, np.where(np.array(taskdf.columns == 'State'))[0][0]] = 90
         return taskdf
 

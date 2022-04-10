@@ -2,6 +2,10 @@
 *.ipynb
 localenv
 api.py
+.local.env
+.env
+.vscode
+.DS_Store
 *.pyc
 .mypy_cache
 __pycache__
