@@ -1,7 +1,5 @@
 import argparse
 
-from numpy import real
-
 from src.save import TimeSave
 from src.termination import Termination
 from src.timekeeper import TimeKeeper

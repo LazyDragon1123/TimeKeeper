@@ -8,6 +8,10 @@ authors = ["LazyDragon1123 <lightwalkwithme@gmail.com>"]
 python = "^3.9"
 pandas = "^1.4.1"
 requests = "^2.27.1"
+opencv-python = "^4.5.5"
+autoflake = "*"
+isort = "*"
+black = "*"
 
 [tool.poetry.dev-dependencies]
 
