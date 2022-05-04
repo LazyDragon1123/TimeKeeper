@@ -4,6 +4,7 @@ import time
 import numpy as np
 
 from .endday import DaySummary
+from .media import MediaPlayer
 from .openday import OpenSummary
 from .taskmaker import TaskTable
 from .taskmanager import TaskManager
@@ -22,6 +23,7 @@ class TimeKeeper:
         self.taskmanager = TaskManager()
         self.begin_day = False
         self.tasktable = TaskTable()
+        self.player = MediaPlayer()
 
     def begin(self):
         if self.task == "sleep":
@@ -42,6 +44,9 @@ class TimeKeeper:
         if self.begin_day:
             op = OpenSummary(data_list=self.days_sum_list)
             op.summary()
+            self.player.play('aud_1.mp3')
+            time.sleep(2)
+            self.player.play('aud_2.mp3')
 
     def date_start(self):
         return f"{self.date.year}_{self.date.month}_{self.date.day}"

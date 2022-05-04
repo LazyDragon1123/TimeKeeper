@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
-
 from collector.collector import Weather
+
 from src.phototaker.takephoto import TakePhoto
 
 suffix = "\033["
@@ -81,5 +81,5 @@ class OpenSummary:
             return exhibits
 
     def _specific_date(self, days=0):
-        self.date = datetime.datetime.now() + datetime.timedelta(days=days)
+        self.date = datetime.now() + timedelta(days=days)
         return f"{self.date.year}_{self.date.month}_{self.date.day}"
