@@ -3,7 +3,8 @@ from os.path import exists
 
 import pandas as pd
 
-float_sub = ["weight"]
+float_sub = ["weight", "high", 'low']
+str_sub = ["diary"]
 
 
 class DaySummary:
@@ -36,6 +37,8 @@ class DaySummary:
     def evaluate(subject):
         if subject in float_sub:
             return [float(input(f"How was {subject} ?   "))]
+        elif subject in str_sub:
+            return [str(input(f"Write a {subject} :    "))]
         else:
             ans = str(input(f"How was {subject} ? [y/n]  "))
             return [True] if ans.lower() == "y" else [False]

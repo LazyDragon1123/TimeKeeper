@@ -12,7 +12,8 @@ tail = "\033[0m"
 class OpenSummary:
 
     negative_health = ["caffein", "weight"]
-    floatval = ["weight"]
+    floatval = ["weight", 'high', 'low']
+    not_shown = ['diary']
 
     def __init__(self, data_list=["exercise", "caffein"]):
         self.data_list = data_list
@@ -29,6 +30,8 @@ class OpenSummary:
 
     def get_yourdata(self, ref_days=7):
         for sub in self.data_list:
+            if sub in self.not_shown:
+                continue
             df = pd.read_csv(f"calendar/{sub}.csv", usecols=["Date", "Eval"])
             ref_dates = self.extract_day(df["Date"].to_list())[:ref_days]
             evals = df["Eval"].to_list()

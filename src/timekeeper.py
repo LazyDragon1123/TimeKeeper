@@ -13,11 +13,11 @@ from .taskmanager import TaskManager
 class TimeKeeper:
 
     task_list = ["work", "future", "play", "exercise", "sleep", "commute", "general", "other"]
-    days_sum_list = ["exercise", "caffein", "weight"]
+    days_sum_list = ["exercise", "weight", "high", "low", "diary"]
 
     def __init__(self, task="general"):
         if task not in self.task_list:
-            raise ValueError("Unknow task")
+            raise ValueError("Unknown task")
         self.task = task
         self.date = datetime.datetime.now()
         self.taskmanager = TaskManager()
@@ -44,9 +44,9 @@ class TimeKeeper:
         if self.begin_day:
             op = OpenSummary(data_list=self.days_sum_list)
             op.summary()
-            self.player.play('aud_1.mp3')
-            time.sleep(2)
-            self.player.play('aud_2.mp3')
+            # self.player.play('aud_1.mp3')
+            # time.sleep(2)
+            # self.player.play('aud_2.mp3')
 
     def date_start(self):
         return f"{self.date.year}_{self.date.month}_{self.date.day}"
